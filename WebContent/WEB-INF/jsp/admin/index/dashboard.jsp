@@ -275,7 +275,7 @@
 		var fschart_yb = echarts.init(document.getElementById('fschart_yb'));
 		fschart_yb_option = {
 			tooltip : {
-				formatter : "风速<br/>${value}m/s"
+				formatter : "风速<br/>{c}m/s"
 			},
 			series : [ {
 				axisLine : {
@@ -362,6 +362,9 @@
 		                        default:return v;
 		                    }
 		                }
+		            },
+		            axisTick: {            // 坐标轴小标记
+		                show: false
 		            },
 					pointer: {
 		                width:2
