@@ -1,0 +1,1 @@
+INSERT INTO `user` (`id`, `date_create`, `date_update`, `is_internal`, `last_login_time`, `password`, `phone`, `status`) VALUES ('-1', '2015-04-27 14:17:24', '2015-04-27 14:39:07', NULL, NULL, 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'Y');

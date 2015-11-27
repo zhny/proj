@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="proj" default="build">
+	<property name="src" value="src" />
+	<property name="resources" value="resources" />
+	<property name="WebContent" value="WebContent" />
+	<property name="manual" value="manual" />
+	<property name="scripts" value="scripts" />
+	<property name="dist" value="dist" />
+	<property name="warDest" value="ipop_emt" />
+	<property name="bin" value="class" />
+	<property name="source-encoding" value="UTF-8" />
+	<property name="tomcat-lib" value="F:/apache-tomcat-7.0.56/lib" />
+	<property name="warName" value="ipop_emt.war" />
+	<property name="artifacts" value="ipop_emt.zip" />
+	
+
+	<!--编译java源文件所需的jar文件 -->
+	<path id="lib-classpath">
+		<fileset dir="${WebContent}/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${tomcat-lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!--清理-->
+	<target name="clean">
+		<delete dir="${dist}" />
+	</target>
+
+	<!-- 初始化，建立相关的文件夹-->
+	<target name="init">
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/${warDest}" />
+		<mkdir dir="${dist}/${bin}" />
+	</target>
+
+
+	<!-- 编译java源文件并拷贝到相应的文件夹-->
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${dist}/${bin}" source="1.6" target="1.6" encoding="${source-encoding}" debug="true" debuglevel="source,lines,vars">
+			<classpath refid="lib-classpath"></classpath>
+			<compilerarg value="-processorpath" />
+	        <compilerarg value="/${WebContent}/WEB-INF/lib/validation-api-1.1.0.Final.jar:/${WebContent}/WEB-INF/lib/hibernate-validator-annotation-processor-5.1.3.Final.jar"/>
+				
+		</javac>
+	</target>
+
+	<!--拷贝webcontent文件到相应的文件夹-->
+	<target name="copy">
+		<copy todir="${dist}/${warDest}">
+			<fileset dir="${WebContent}">
+				<exclude name="WEB-INF/classes/**"/>
+			</fileset>
+		</copy>
+		<copy todir="${dist}/${bin}">
+			<fileset dir="${src}">
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${resources}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<move  todir="${dist}/${warDest}/WEB-INF/classes" >
+			 <fileset dir="${dist}/${bin}"/>
+		</move>
+	</target>
+
+	<target name="build" depends="clean,compile, copy">
+		<copy todir="${dist}/${manual}">
+			<fileset dir="${manual}"/>
+		</copy>
+		<copy todir="${dist}/${scripts}">
+			<fileset dir="${scripts}"/>
+		</copy>
+		<zip destfile="${dist}/${artifacts}">
+		    <fileset dir="${dist}"/>
+		</zip>
+		<delete dir="${dist}/${warDest}"></delete>
+		<delete dir="${dist}/${manual}"></delete>
+		<delete dir="${dist}/${scripts}"></delete>
+	</target>
+</project>

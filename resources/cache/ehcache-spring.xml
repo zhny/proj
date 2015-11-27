@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="springCache">
+
+	<diskStore path="java.io.tmpdir/ehcache/springCache" />
+
+	<!-- DefaultCache setting. -->
+	<defaultCache maxEntriesLocalHeap="10000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		overflowToDisk="true" maxEntriesLocalDisk="100000" />
+		
+	<cache name="service" maxElementsInMemory="100000"  
+        maxElementsOnDisk="10000" eternal="false" overflowToDisk="true"  
+        diskSpoolBufferSizeMB="200" timeToIdleSeconds="300" timeToLiveSeconds="600"  
+        memoryStoreEvictionPolicy="LFU" />  
+</ehcache>

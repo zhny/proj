@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jdbc 
+                           http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/mvc
+        				   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				   http://www.springframework.org/schema/aop 
+        				   http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<context:component-scan base-package="cn.zhny" />
+	<aop:aspectj-autoproxy />
+	<context:annotation-config />
+	
+	
+	 <bean id="handlerExceptionResolver" class="cn.zhny.base.exception.AnnotationHandlerMethodExceptionResolver">  
+        <property name="defaultErrorView" value="error/500"/> <!--错误页面-->  
+        <property name="messageConverters">  
+            <list>  
+                <bean    class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />  
+                <!-- JSON转换器无需设置mediaType,由外部客户端调用时，手动设置相关mediaType -->  
+                <bean    class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />  
+            </list>  
+        </property>  
+    </bean>  
+	
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/> 
+	<mvc:annotation-driven conversion-service="conversionService">
+		<mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+                <property name = "supportedMediaTypes">
+                    <list>
+                        <bean class="org.springframework.http.MediaType">
+                            <constructor-arg index="0" value="text"/>
+                            <constructor-arg index="1" value="plain"/>
+                            <constructor-arg index="2" value="UTF-8"/>
+                        </bean>
+                        <bean class="org.springframework.http.MediaType">
+                            <constructor-arg index="0" value="*"/>
+                            <constructor-arg index="1" value="*"/>
+                            <constructor-arg index="2" value="UTF-8"/>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="cn.zhny.base.utils.HibernateAwareObjectMapper" />
+                </property>
+            </bean>
+        </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+    <mvc:resources location="/static/" mapping="/static/**"/>
+    <mvc:resources location="/upload/" mapping="/upload/**"/>
+ 
+    <!-- 视图解释类 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+    
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	<bean id="annotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="webBindingInitializer">
+        	<bean class="cn.zhny.base.filter.DateFilter"/>
+        </property>
+	</bean>
+</beans>

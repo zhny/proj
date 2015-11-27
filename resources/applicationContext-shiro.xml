@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jdbc 
+                           http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/mvc
+        				   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				   http://www.springframework.org/schema/aop 
+        				   http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<context:component-scan base-package="cn.zhny" />
+	<aop:aspectj-autoproxy />
+	<context:annotation-config />
+	
+	<!-- =========================================================
+         Shiro Components
+         ========================================================= -->
+	
+	<!-- 项目自定义的Realm -->
+	<bean id="shiroRealm" class="cn.zhny.base.security.ShiroRealm" >
+		<!-- 可配置cache token<->认证信息的cache，用于REST等需要频繁认证的场景 -->
+		<property name="authorizationCachingEnabled" value="true" />
+	</bean>
+	
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:cache/ehcache-shiro.xml" />
+	</bean>
+	
+    <!-- Shiro's main business-tier object for web-enabled applications
+         (use org.apache.shiro.web.mgt.DefaultWebSecurityManager instead when there is no web environment)-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- Single realm app (realm configured next, below).  If you have multiple realms, use the 'realms'
+      property instead. -->
+        <property name="realm" ref="shiroRealm"/>
+        <!-- Uncomment this next property if you want heterogenous session access or clusterable/distributable
+             sessions.  The default value is 'http' which uses the Servlet container's HttpSession as the underlying
+             Session implementation.
+        <property name="sessionMode" value="native"/> -->
+        <property name="cacheManager" ref="shiroEhcacheManager" />
+    </bean>
+
+    <!-- Post processor that automatically invokes init() and destroy() methods -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+	<bean id="chainDefinitionSectionMetaSource" class="cn.zhny.base.security.ChainDefinitionSectionMetaSource">
+		<property name="filterChainDefinitions">  
+            <value>  
+				/api/**=anon
+				/login=anon
+				/static/**=anon
+				/upload/**=anon
+				/favicon.ico=anon
+				/logout=logout
+				/admin=anon
+				/admin/random = anon
+				/admin/login = anon
+				/admin/**=authc
+            </value>  
+        </property>
+	</bean>
+
+    <!-- Define the Shiro Filter here (as a FactoryBean) instead of directly in web.xml -
+         web.xml uses the DelegatingFilterProxy to access this bean.  This allows us
+         to wire things with more control as well utilize nice Spring things such as
+         PropertiesPlaceholderConfigurer and abstract beans or anything else we might need: -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/admin"/>
+        <property name="successUrl" value="/admin/index"/>
+        <property name="unauthorizedUrl" value="/admin"/>
+        <!-- The 'filters' property is usually not necessary unless performing an override, which we
+             want to do here (make authc point to a PassthruAuthenticationFilter instead of the
+             default FormAuthenticationFilter: -->
+        <property name="filters">
+            <map>
+            	<entry key="perms">  
+                    <bean class="cn.zhny.base.security.AjaxPermissionsAuthorizationFilter" />  
+                </entry>
+                <entry key="authc">
+                    <bean class="cn.zhny.base.security.AjaxPassThruAuthenticationFilter"/>
+                </entry>
+            </map>
+        </property>
+        <property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource" />  
+    </bean>
+</beans>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jdbc 
+                           http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/mvc
+        				   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				   http://www.springframework.org/schema/aop 
+        				   http://www.springframework.org/schema/aop/spring-aop.xsd
+        				   http://www.springframework.org/schema/cache 
+        				   http://www.springframework.org/schema/cache/spring-cache.xsd">
+	
+	<context:component-scan base-package="cn.zhny" />
+	<aop:aspectj-autoproxy />
+	<context:annotation-config />
+	
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="dataSource" p:packagesToScan="cn.zhny">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.show_sql" >false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.id.new_generator_mappings">true</prop>
+				<prop key="hibernate.ejb.naming_strategy">cn.zhny.base.utils.ImprovedNamingStrategyFix</prop>
+				<prop key="hibernate.connection.autocommit">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="net.sf.ehcache.configurationResourceName">cache/ehcache.xml</prop>
+                <prop key="hibernate.generate_statistics">false</prop>
+			</props>
+		</property>
+
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		</property>
+	</bean>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehcache"/>
+	</bean>
+	
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation">
+			<value>classpath:cache/ehcache-spring.xml</value>
+		</property>
+		<property name="shared" value="true"/>
+	</bean> 
+	
+	<cache:annotation-driven cache-manager="cacheManager" />  
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<!-- 
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" p:entityManagerFactory-ref="entityManagerFactory" />
+	 -->
+	 
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="serverConfig" class="com.avaje.ebean.config.ServerConfig">
+		<property name="defaultServer" value="true"></property>
+		<property name="name" value="localmysql"></property>
+		<property name="externalTransactionManager">
+			<bean class="com.avaje.ebean.springsupport.txn.SpringAwareJdbcTransactionManager"/>
+		</property>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="packages">
+			<list>
+				<value>cn.zhny</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ebeanServer" class="com.avaje.ebean.springsupport.factory.EbeanServerFactoryBean">
+		<property name="serverConfig" ref="serverConfig"/>
+	</bean>
+	
+
+	<beans profile="production">
+		<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/production-*.properties" />
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"    destroy-method="close">
+			<property name="driverClass" value="com.mysql.jdbc.Driver" />
+			<property name="jdbcUrl" value="${jdbc_url}" />
+			<property name="user" value="${jdbc_user}" />
+			<property name="password" value="${jdbc_password}" />
+			<property name="minPoolSize"><value>1</value></property>
+			<property name="maxPoolSize"><value>10</value></property>
+			<property name="maxIdleTime"><value>600</value></property>
+			<property name="acquireIncrement"><value>1</value></property>
+	        <property name="maxStatements"><value>0</value></property>
+	        <property name="initialPoolSize"><value>1</value></property>
+	        <property name="idleConnectionTestPeriod"><value>1800</value></property>
+	        <property name="acquireRetryAttempts"><value>30</value></property>
+	        <property name="breakAfterAcquireFailure"><value>true</value></property>
+	        <property name="testConnectionOnCheckout"><value>false</value></property>
+		</bean>
+	</beans>
+</beans>
