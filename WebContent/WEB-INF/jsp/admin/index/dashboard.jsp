@@ -8,33 +8,25 @@
 </ul>
 
 <div class="row-fluid  ">
-	<div class="span2">
-		<div id="wdchart_yb" style="height: 300px;"></div>
+	<div class="span4 widget">
+		<div id="wdchart_yb" style="height: 320px;"></div>
 	</div>
-	<div class="span2">
-		<div id="sdchart_yb" style="height: 300px;"></div>
+	<div class="span4 widget">
+		<div id="sdchart_yb" style="height: 320px;"></div>
 	</div>
-	<div class="span2">
-		<div id="fxchart_yb" style="height: 300px;"></div>
-	</div>
-	<div class="span2">
-		<div id="fschart_yb" style="height: 300px;"></div>
-	</div>
-	<div class="span2">
-		<div id="qychart_yb" style="height: 300px;"></div>
-	</div>
-	<div class="span2">
-		<div id="phpmchart_yb" style="height: 300px;"></div>
+	<div class="span4 widget">
+		<div id="fxchart_yb" style="height: 320px;"></div>
 	</div>
 </div>
 <div class="row-fluid  ">
-	<div class="span3">
+	<div class="span4 widget">
+		<div id="fschart_yb" style="height: 320px;"></div>
 	</div>
-	<div class="span3">
+	<div class="span4 widget">
+		<div id="qychart_yb" style="height: 320px;"></div>
 	</div>
-	<div class="span3">
-	</div>
-	<div class="span3">
+	<div class="span4 widget">
+		<div id="phpmchart_yb" style="height:320px;"></div>
 	</div>
 </div>
 <div class="row-fluid">
