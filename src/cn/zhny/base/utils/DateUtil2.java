@@ -1,8 +1,8 @@
 package cn.zhny.base.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.ibm.icu.text.SimpleDateFormat;
 
 public class DateUtil2 {
 	public static final SimpleDateFormat yyyy_MM_dd=new SimpleDateFormat("yyyy-MM-dd");
