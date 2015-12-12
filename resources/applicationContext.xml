@@ -113,4 +113,24 @@
 	        <property name="testConnectionOnCheckout"><value>false</value></property>
 		</bean>
 	</beans>
+	
+	<beans profile="test">
+		<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/test-*.properties" />
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"    destroy-method="close">
+			<property name="driverClass" value="com.mysql.jdbc.Driver" />
+			<property name="jdbcUrl" value="${jdbc_url}" />
+			<property name="user" value="${jdbc_user}" />
+			<property name="password" value="${jdbc_password}" />
+			<property name="minPoolSize"><value>1</value></property>
+			<property name="maxPoolSize"><value>10</value></property>
+			<property name="maxIdleTime"><value>600</value></property>
+			<property name="acquireIncrement"><value>1</value></property>
+	        <property name="maxStatements"><value>0</value></property>
+	        <property name="initialPoolSize"><value>1</value></property>
+	        <property name="idleConnectionTestPeriod"><value>1800</value></property>
+	        <property name="acquireRetryAttempts"><value>30</value></property>
+	        <property name="breakAfterAcquireFailure"><value>true</value></property>
+	        <property name="testConnectionOnCheckout"><value>false</value></property>
+		</bean>
+	</beans>
 </beans>
