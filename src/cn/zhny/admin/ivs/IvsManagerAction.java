@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by Administrator on 15-12-12.
  */
 @Controller
-@RequestMapping("admin/environment")
+@RequestMapping("admin/ivs")
 public class IvsManagerAction extends AbstractAction {
 
     @RequestMapping("preview")

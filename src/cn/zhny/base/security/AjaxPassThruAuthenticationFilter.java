@@ -68,7 +68,7 @@ public class AjaxPassThruAuthenticationFilter extends PassThruAuthenticationFilt
 				httpResponse.setStatus(401);
 				JsonUtil.toJson(new Jo(Jo.CODE_UNLOGIN, "登录超时，请重新登录"), httpResponse);
 			} else {
-				if (httpRequest.getRequestURI().indexOf("/admin") > 0) {
+				if (httpRequest.getRequestURI().indexOf("/admin") >= 0) {
 					saveRequestAndRedirectToLogin(request, response);
 				} else {
 					String url = URLEncoder.encode(httpRequest.getRequestURL() + "?" + httpRequest.getQueryString(), "utf-8");

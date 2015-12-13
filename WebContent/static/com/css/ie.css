@@ -32,6 +32,8 @@
 	margin-left: 0px !important;
 	position: absolute;
 	height: 100%;
+    top:0px;
+    left:0px;
 }
 
 hr {
