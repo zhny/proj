@@ -65,7 +65,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- end: Main Menu -->
 
 			<div id="content" class="span10">
-			<c:import url="/admin/index/dashboard"></c:import>
 			</div>
 			
 		</div>

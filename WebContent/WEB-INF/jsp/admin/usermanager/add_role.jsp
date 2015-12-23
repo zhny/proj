@@ -17,7 +17,7 @@
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">选择角色</label>
+			<label class="control-label">选择权限</label>
 			<div class="controls">
 				<ul id="pmtree"></ul>  
 			</div>

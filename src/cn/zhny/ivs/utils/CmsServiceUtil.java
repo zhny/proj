@@ -33,8 +33,6 @@ public class CmsServiceUtil {
 	
 	private static ScheduledExecutorService scheduler=Executors.newScheduledThreadPool(1);
 	
-	private static int i=1;
-	
 	static{
 		login();
 	}
@@ -54,7 +52,6 @@ public class CmsServiceUtil {
 		        	scheduler.scheduleAtFixedRate(new Runnable(){
 						@Override
 						public void run() {
-							if(i++%3==0)sessionId+="1";
 							CommonResult commonResult=port.userOnlineHeartbeat(sessionId);
 			        		if(commonResult.getErrorCode().equals(0)){
 			        			log.info("海康心跳检测正常");
@@ -65,7 +62,7 @@ public class CmsServiceUtil {
 			        			log.info("海康心跳检测异常，错误码:{},尝试重新登陆",commonResult.getErrorCode());
 			        			login();
 			        		}
-						}}, 0, 60, TimeUnit.SECONDS);
+						}}, 0, 30, TimeUnit.SECONDS);
 	        	}
 	        }else{
 	        	log.error("海康服务登陆失败，请检查配置,错误码:{}",loginResult.getErrorCode());

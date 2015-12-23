@@ -34,5 +34,5 @@
 <script src="static/com/js/sco.confirm.js"></script> 
 <script src="static/com/js/jquery.parser.js"></script> 
 <script src="static/com/js/jquery.tree.js"></script>
-<script src="static/com/js/My97DatePicker/WdatePicker.js"></script> 
+<script src="<%=basePath%>/static/com/js/My97DatePicker/WdatePicker.js"></script> 
 <script src="static/com/js/echart/echarts-all.js"></script> 

@@ -54,7 +54,7 @@ var grid = $("#grid-data").bootgrid({
     formatters: {
     	"roles":function(column,row){
     		var result="";
-    		for(var i in row.roles){
+    		for(var i=0;i<row.roles.length;i++){
     			result+=row.roles[i].name+" ";
     		}
     		return result;
