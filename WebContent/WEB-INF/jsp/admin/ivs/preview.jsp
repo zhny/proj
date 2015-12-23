@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="box span8" >
+    <div class="box span7" >
         <div class="box-header" data-original-title>
             <h2><i class="halflings-icon user"></i><span class="break"></span>预览</h2>
             <div class="box-icon"></div>
@@ -32,7 +32,7 @@
         	
         </div>
     </div>
-    <div class="box span2" style="width:160px;display:block;">
+    <div class="box span3" style="width:163px;display:block;">
         <div class="box-header" data-original-title>
             <h2><i class="halflings-icon list"></i><span class="break"></span>云台控制</h2>
             <div class="box-icon"></div>
@@ -80,7 +80,7 @@ $(".sliderMin").slider({
 		$( ".ocx-ctrl-speed" ).html(ui.value );
 	}
 });
-var ocxHeight=$(window).height()-160;
+var ocxHeight=$(window).height()-200;
 $('#ocxdiv').append('<object classid="clsid:D5E14042-7BF6-4E24-8B01-2F453E8154D7" id="ocxObject" width="100%" height="'+ocxHeight+'" name="OcxObject"></object>');
 var ocx=document.getElementById('ocxObject');
 ocx.SetOcxMode(0);

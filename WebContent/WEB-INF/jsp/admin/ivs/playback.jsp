@@ -57,7 +57,7 @@ WdatePicker({eCont:'timepick',onpicked:function(dp){
 	$('input[name="timeEnd"]').val(timeStr+" 23:59:59");
 	$('input[name="timeStart"]').val(timeStr+" 00:00:00");
 }});
-var ocxHeight=$(window).height()-160;
+var ocxHeight=$(window).height()-200;
 $('#ocxdiv').append('<object classid="clsid:61978326-6772-4595-9EC3-D23C5CD5E61F" id="ocxObject" width="100%" height="'+ocxHeight+'" name="ocx"></object>');
 var ocx=document.getElementById('ocxObject');
 $(function(){

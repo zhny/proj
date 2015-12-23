@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.zhny.base.action.AbstractAction;
-import cn.zhny.base.utils.JsonUtil;
 import cn.zhny.ivs.utils.CmsServiceUtil;
 import cn.zhny.ivs.vo.CameraVo;
 import cn.zhny.ivs.webservice.CameraDTO;
