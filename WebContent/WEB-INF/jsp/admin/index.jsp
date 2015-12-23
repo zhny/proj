@@ -65,6 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- end: Main Menu -->
 
 			<div id="content" class="span10">
+				<jsp:include page="/admin/index/dashboard"></jsp:include>
 			</div>
 			
 		</div>
