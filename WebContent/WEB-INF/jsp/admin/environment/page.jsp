@@ -30,19 +30,19 @@
 	      <table id="grid-data" class="table table-condensed table-hover table-striped table-bordered" >
 	         <thead>
 	             <tr>
-	                 <th data-column-id="rTime" data-width="12%">采集时间</th>
-	                 <th data-column-id="station_sName" data-formatter="station_sName">站点</th>
+	                 <th data-column-id="rTime" data-width="140">采集时间</th>
+	                 <th data-column-id="station_sName" data-formatter="station_sName"  data-width="100">站点</th>
 	                 <th data-column-id="d1">温度</th>
 	                 <th data-column-id="d2">湿度</th>
 	                 <th data-column-id="d3">风向</th>
 	                 <th data-column-id="d4">风速</th>
 	                 <th data-column-id="d5">气压</th>
-	                 <th data-column-id="d6">总辐射</th>
+	                 <th data-column-id="d6" data-width="70">总辐射</th>
 	                 <th data-column-id="d7">雨量</th>
-	                 <th data-column-id="d8">土壤温度</th>
-	                 <th data-column-id="d12">日照时数</th>
-	                 <th data-column-id="d13">PM2.5</th>
-	                 <th data-column-id="d14">水PH值</th>
+	                 <th data-column-id="d8" data-width="75">土壤温度</th>
+	                 <th data-column-id="d12" data-width="75">日照时数</th>
+	                 <th data-column-id="d13" data-width="75">PM2.5</th>
+	                 <th data-column-id="d14" data-width="75">水PH值</th>
 	             </tr>
 	         </thead>
 	      </table>
