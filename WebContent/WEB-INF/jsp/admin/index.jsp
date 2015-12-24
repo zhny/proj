@@ -8,6 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 <base href="<%=basePath%>">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta charset="utf-8">
 <title>首页</title>
@@ -65,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- end: Main Menu -->
 
 			<div id="content" class="span10">
-				<jsp:include page="/admin/index/dashboard"></jsp:include>
+				<c:import url="/admin/index/dashboard"></c:import>
 			</div>
 			
 		</div>
