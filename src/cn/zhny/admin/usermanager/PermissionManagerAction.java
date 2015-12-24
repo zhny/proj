@@ -21,7 +21,7 @@ import cn.zhny.base.vo.Jo;
  */
 @Controller
 @RequestMapping("admin/permission")
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PermissionManagerAction extends AbstractAction{
 	
 	@Autowired

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import cn.zhny.ivs.webservice.PreviewResult;
  */
 @Controller
 @RequestMapping("admin/ivs")
+@Transactional(rollbackFor=Exception.class)
 public class IvsManagerAction extends AbstractAction {
 
     @RequestMapping("preview")

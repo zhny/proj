@@ -23,7 +23,7 @@ import com.avaje.ebean.PagedList;
 
 @Controller
 @RequestMapping("admin/usermanager")
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class UserManagerAction extends AbstractAction{
 	
 	@Autowired

@@ -2,10 +2,9 @@ package cn.zhny.admin.usermanager;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ import com.avaje.ebean.PagedList;
 
 @Controller
 @RequestMapping("admin/role")
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class RoleManagerAction extends AbstractAction{
 	
 	@Autowired

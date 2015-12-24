@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ import com.avaje.ebean.PagedList;
 
 @Controller
 @RequestMapping("admin/environment")
+@Transactional(rollbackFor=Exception.class)
 public class EnvironmentManagerAction extends AbstractAction{
 	
 	

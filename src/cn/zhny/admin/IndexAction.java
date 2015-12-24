@@ -31,7 +31,7 @@ import com.avaje.ebean.SqlRow;
 
 @Controller
 @RequestMapping("/admin")
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class IndexAction extends AbstractAction{
 	
 	@Autowired

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -15,6 +16,7 @@ import cn.zhny.environment.entity.Record;
 
 @Controller
 @RequestMapping("api/em")
+@Transactional(rollbackFor=Exception.class)
 public class EnvironmentApi  extends AbstractAction{
 	
 	@ResponseBody
