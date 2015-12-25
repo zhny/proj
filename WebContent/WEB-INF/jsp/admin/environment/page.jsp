@@ -19,10 +19,23 @@
 		</div>
 		<div class="box-content">
 			<form class="form-search form-inline" id="search-form">
-			  <label>采集时间起：</label>
-		      <input type="text" class="input-medium search-query" name="rTimeStart" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
-		      <label>采集时间止：</label>
-		      <input type="text" class="input-medium search-query" name="rTimeEnd" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+			  <label>采集时间段：</label>
+		      <input type="text" class="input-medium search-query" name="rTimeStart" value="${param.rTimeStart}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">~<input type="text" class="input-medium search-query" name="rTimeEnd" value="${param.rTimeEnd}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+		      <label>数据项：</label>
+		      <select name="col">
+		      	<option value="">全部</option>
+		      	<option value="d1">温度</option>
+		      	<option value="d2">湿度</option>
+		      	<option value="d3">风向</option>
+		      	<option value="d4">风速</option>
+		      	<option value="d5">气压</option>
+		      	<option value="d6">总辐射</option>
+		      	<option value="d7">雨量</option>
+		      	<option value="d8">土壤温度</option>
+		      	<option value="d12">日照时数</option>
+		      	<option value="d13">PM2.5</option>
+		      	<option value="d14">水PH值</option>
+		      </select>
 		      <button type="button" class="btn" id="search-btn">查询</button>
 		    </form>
 		</div>
@@ -57,7 +70,9 @@ var grid = $("#grid-data").bootgrid({
     url: "admin/environment/page",
     post: function ()
     {
-        return  $('#search-form').serializeObject();   
+        var param= $('#search-form').serializeObject();   
+        param.colName=$('#search-form').find('[name="col"]').find("option:selected").text();
+        return param;
     },
     formatters: {
     	"station_sName":function(column,row){
@@ -66,7 +81,9 @@ var grid = $("#grid-data").bootgrid({
     }
 });
 $('#search-btn').click(function(){
-	grid.bootgrid('reload');
+	 var param= $('#search-form').serializeObject();   
+     param.colName=$('#search-form').find('[name="col"]').find("option:selected").text();
+	$('#content').load('admin/environment',param);
 });
 $('th[data-column-id="d1"]').click(function(){
 	var modal = $.scojs_modal({width:"800",title:"温度变化",remote:'admin/environment/view/d1?isXy=true&'+$('#search-form').serialize()});

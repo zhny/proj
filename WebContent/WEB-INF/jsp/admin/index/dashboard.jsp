@@ -62,7 +62,7 @@
 			title : {
 				text : '当前温度变化',
 				x: 'center',
-				subtext : '每分钟采集一次'
+				subtext : ''
 			},
 			tooltip : {
 				trigger : 'axis'
@@ -107,7 +107,7 @@
 			title : {
 				text : '当前湿度变化',
 				x: 'center',
-				subtext : '每分钟采集一次'
+				subtext : ''
 			},
 			tooltip : {
 				trigger : 'axis'
@@ -480,6 +480,6 @@
 				}
 			});
 			// 动态数据接口 addData
-		}, 30000);
+		}, 60000);
 	}
 </script>

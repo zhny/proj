@@ -24,10 +24,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="admin/index"><span>呵呵</span></a>
+				<a class="brand" href="admin/index"><span>standard</span></a>
 				<!-- start: Header Menu -->
 				<div class="nav-no-collapse header-nav">
 					<ul class="nav pull-right">
+						<li>
+							<a data-trigger="modal" href="admin/sysconf" class="btn" data-title="系统参数设置" title="系统参数设置">
+								<i class="halflings-icon white wrench"></i>系统参数
+							</a>
+						</li>
 						<!-- start: User Dropdown -->
 						<li class="dropdown">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -38,7 +43,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<li class="dropdown-menu-title">
  									<span>账户设置</span>
 								</li>
-								<li><a href="#"><i class="halflings-icon user"></i> 个人信息</a></li>
 								<li><a href="admin/logout"><i class="halflings-icon off"></i> 退出</a></li>
 							</ul>
 						</li>
