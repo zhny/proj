@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.zhny.base.action.AbstractAction;
+import cn.zhny.base.entity.SysConf;
 import cn.zhny.base.utils.DateUtil;
 import cn.zhny.base.utils.DateUtil2;
 import cn.zhny.base.utils.JsonUtil;
 import cn.zhny.base.utils.Reflections;
+import cn.zhny.base.utils.StringUtil;
 import cn.zhny.base.vo.BSPage;
 import cn.zhny.environment.entity.Record;
 import cn.zhny.environment.entity.Stations;
@@ -34,34 +36,43 @@ import com.avaje.ebean.PagedList;
 @Transactional(rollbackFor=Exception.class)
 public class EnvironmentManagerAction extends AbstractAction{
 	
-	
 	@RequestMapping("")
-	public String index(){
-		return "admin/environment/page";
+	public String index(String col,String colName){
+		return StringUtil.isEmpty(col)?"admin/environment/page":"admin/environment/col_page";
 	}
 	
 	@ResponseBody
 	@RequestMapping("page")
-	public BSPage page(Integer current,Integer rowCount){
-		ExpressionList<Record> expr=Record.find.fetch("station").where();
+	public BSPage page(Integer current,Integer rowCount,String col){
+		
+		SysConf sysConf=SysConf.find.setUseQueryCache(true).where().eq("code", "ENV_PICK_TIME").findUnique();
+		String pickTime=sysConf.getValue();
+		ExpressionList<Record> expr=null;
+		if(StringUtil.isEmpty(col)){
+			expr=Record.find.fetch("station").where().eq("MOD(t0.id,"+pickTime+")", 0);
+		}else{
+			expr=Record.find.select("ID,rTime,"+col).fetch("station").where().eq("MOD(t0.id,"+pickTime+")", 0);
+		}
 		if(checkParam("rTimeStart")){
 			expr.ge("rTime", getParam("rTimeStart"));
 		}
 		if(checkParam("rTimeEnd")){
 			expr.le("rTime", getParam("rTimeEnd"));
 		}
-		PagedList<Record> page=expr.findPagedList(current-1, rowCount);
+		PagedList<Record> page=expr.orderBy("ID desc").findPagedList(current-1, rowCount);
 		return new BSPage(page,rowCount);
 	}
 	
 	@ResponseBody
 	@RequestMapping("getData")
 	public Map<String,Object> getData(Long lastId,Integer len,Long stationId){
-		//初始化取多条数据
+		SysConf sysConf=SysConf.find.setUseQueryCache(true).where().eq("code", "ENV_PICK_TIME").findUnique();
+		String pickTime=sysConf.getValue();
+		
 		List<Record> records=null;
 		if(lastId==null&&len==null)return null;
 		if(len!=null){
-			records=Record.find.orderBy("id desc").findPagedList(0, len).getList();
+			records=Record.find.where().eq("MOD(t0.id,"+pickTime+")", 0).orderBy("id desc").findPagedList(0, len).getList();
 		}
 		if(lastId!=null){
 			records=Record.find.where().eq("id", lastId+1).findList();
@@ -126,6 +137,9 @@ public class EnvironmentManagerAction extends AbstractAction{
 	@ResponseBody
 	@RequestMapping("getData/{dx}")
 	public void getData(@PathVariable String dx,Boolean isXy,HttpServletResponse response){
+		SysConf sysConf=SysConf.find.setUseQueryCache(true).where().eq("code", "ENV_PICK_TIME").findUnique();
+		String pickTime=sysConf.getValue();
+		
 		List<Record> records=null;
 		ExpressionList<Record> expr=Record.find.where();
 		if(checkParam("rTimeStart")){
@@ -134,7 +148,8 @@ public class EnvironmentManagerAction extends AbstractAction{
 		if(checkParam("rTimeEnd")){
 			expr.le("rTime", getParam("rTimeEnd"));
 		}
-		expr.eq("MOD(t0.id,60)", 0);
+		
+		expr.eq("MOD(t0.id,"+pickTime+")", 0);
 		records=expr.orderBy("id desc").findList();
 		if(records==null||records.size()==0)return;
 		if(isXy!=null&&isXy){
@@ -183,4 +198,5 @@ public class EnvironmentManagerAction extends AbstractAction{
 			record.save();
 		}
 	}
+	
 }

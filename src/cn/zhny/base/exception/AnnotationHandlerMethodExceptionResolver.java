@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -30,6 +32,8 @@ import cn.zhny.base.vo.Jo;
 
 public class AnnotationHandlerMethodExceptionResolver extends ExceptionHandlerExceptionResolver {  
     
+	public static final Logger log = LoggerFactory.getLogger(AnnotationHandlerMethodExceptionResolver.class);
+	
     private String defaultErrorView;  
   
     public String getDefaultErrorView() {  
@@ -54,15 +58,16 @@ public class AnnotationHandlerMethodExceptionResolver extends ExceptionHandlerEx
         String errorMsg=null;
         if(exception instanceof SQLException){
         	errorMsg="[数据库异常]";
-        	logger.error(errorMsg, exception);
+        	log.error(errorMsg, exception);
         }else if(exception instanceof BusiExcepiton){
         	errorMsg="[业务异常]"+exception.getMessage();
         	request.setAttribute("_error_msg_", exception.getMessage());
+        	log.error(errorMsg, exception);
         }else{
         	errorMsg="[其他异常]";
-        	logger.error(errorMsg, exception);
+        	log.error(errorMsg, exception);
         }
-        exception.printStackTrace();
+       
         //如果定义了ExceptionHandler则返回相应的Map中的数据  
         ModelAndView returnValue = super.doResolveHandlerMethodException(request, response, handlerMethod, exception);  
         ResponseBody responseBodyAnn = AnnotationUtils.findAnnotation(method, ResponseBody.class);  
@@ -77,17 +82,20 @@ public class AnnotationHandlerMethodExceptionResolver extends ExceptionHandlerEx
                     } else {  
                         try {  
                             response.sendError(responseStatus.value(), reason);  
-                        } catch (IOException e) { }  
+                        } catch (IOException e) { 
+                        	log.error("response.sendError error", e);
+                        }  
                     }  
                 }  
                 // 如果没有ExceptionHandler注解那么returnValue就为空  
                 if (returnValue == null) {  
-                    Jo res = new Jo(Jo.CODE_FAIL,"系统异常：" + exception.getLocalizedMessage());  
+                    Jo res = new Jo(Jo.CODE_FAIL,"请求失败：" + exception.getLocalizedMessage());  
                     handleResponseError(res, request, response);  
                     return new ModelAndView();  
                 }  
                 return handleResponseBody(returnValue, request, response);  
             } catch (Exception e) {  
+            	log.error("", e);
                 return null;  
             }  
         }  
@@ -124,9 +132,7 @@ public class AnnotationHandlerMethodExceptionResolver extends ExceptionHandlerEx
                 }  
             }  
         }  
-        if (logger.isWarnEnabled()) {  
-            logger.warn("Could not find HttpMessageConverter that supports return type [" + returnValueType + "] and " + acceptedMediaTypes);  
-        }  
+        log.warn("Could not find HttpMessageConverter that supports return type [" + returnValueType + "] and " + acceptedMediaTypes);  
         return null;  
     }  
     @SuppressWarnings({ "unchecked", "rawtypes", "resource" })  
@@ -150,9 +156,7 @@ public class AnnotationHandlerMethodExceptionResolver extends ExceptionHandlerEx
                 }  
             }  
         }  
-        if (logger.isWarnEnabled()) {  
-            logger.warn("Could not find HttpMessageConverter that supports return type [" + returnValueType + "] and " + acceptedMediaTypes);  
-        }  
+        log.warn("Could not find HttpMessageConverter that supports return type [" + returnValueType + "] and " + acceptedMediaTypes);  
         return null;  
     }  
   
