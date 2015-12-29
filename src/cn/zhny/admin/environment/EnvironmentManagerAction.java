@@ -44,7 +44,6 @@ public class EnvironmentManagerAction extends AbstractAction{
 	@ResponseBody
 	@RequestMapping("page")
 	public BSPage page(Integer current,Integer rowCount,String col){
-		
 		SysConf sysConf=SysConf.find.setUseQueryCache(true).where().eq("code", "ENV_PICK_TIME").findUnique();
 		String pickTime=sysConf.getValue();
 		ExpressionList<Record> expr=null;
