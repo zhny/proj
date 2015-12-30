@@ -1,0 +1,46 @@
+.elegant-icon{
+	background-position: 0 0;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 48px;
+    line-height: 48px;
+    vertical-align: top;
+    width: 48px;
+}
+
+.elegant-icon.left_up_arrow{
+	background-image: url("../img/elegant_font/arrow_left-up_alt.png");
+}
+
+.elegant-icon.up_arrow{
+	background-image: url("../img/elegant_font/arrow_up_alt.png");
+}
+
+.elegant-icon.right_up_arrow{
+	background-image: url("../img/elegant_font/arrow_right-up_alt.png");
+}
+
+.elegant-icon.left_arrow{
+	background-image: url("../img/elegant_font/arrow_left_alt.png");
+}
+
+.elegant-icon.left_right_arrow{
+	background-image: url("../img/elegant_font/arrow_left-right_alt.png");
+}
+
+.elegant-icon.right_arrow{
+	background-image: url("../img/elegant_font/arrow_right_alt.png");
+}
+
+
+.elegant-icon.left_down_arrow{
+	background-image: url("../img/elegant_font/arrow_left-down_alt.png");
+}
+
+.elegant-icon.down_arrow{
+	background-image: url("../img/elegant_font/arrow_down_alt.png");
+}
+
+.elegant-icon.right_down_arrow{
+	background-image: url("../img/elegant_font/arrow_right-down_alt.png");
+}
