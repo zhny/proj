@@ -39,19 +39,19 @@
         </div>
         <div class="box-content" style="padding: 2px;">
             <div>
-                <a href="javascript:void(0);"><i class="glyphicons-icon left_arrow ocx-ctrl" data-type="25"></i></a>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon up_arrow ocx-ctrl" data-type="21"></i></a>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon right_arrow ocx-ctrl" data-type="26"></i></a>
+                <a href="javascript:void(0);"><i class="elegant-icon left_up_arrow ocx-ctrl" data-type="25"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon up_arrow ocx-ctrl" data-type="21"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon right_up_arrow ocx-ctrl" data-type="26"></i></a>
             </div>
             <div>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon left_arrow ocx-ctrl" data-type="23"></i></a>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon retweet_2 ocx-ctrl" data-type="29"></i></a>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon right_arrow ocx-ctrl" data-type="24"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon left_arrow ocx-ctrl" data-type="23"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon left_right_arrow ocx-ctrl" data-type="29"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon right_arrow ocx-ctrl" data-type="24"></i></a>
             </div>
             <div>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon left_arrow ocx-ctrl" data-type="27"></i></a>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon down_arrow ocx-ctrl" data-type="22"></i></a>
-            	<a href="javascript:void(0);"><i class="glyphicons-icon right_arrow ocx-ctrl" data-type="28"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon left_down_arrow ocx-ctrl" data-type="27"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon down_arrow ocx-ctrl" data-type="22"></i></a>
+            	<a href="javascript:void(0);"><i class="elegant-icon right_down_arrow ocx-ctrl" data-type="28"></i></a>
             </div>
             <div>
             	<a href="javascript:void(0);" title="焦距变大"><i class="glyphicons-icon zoom_in ocx-ctrl" data-type="11"></i></a>
