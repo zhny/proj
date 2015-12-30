@@ -263,3 +263,8 @@
 function noty(options) {
 	return jQuery.noty(options); // returns an id
 }
+
+function notyAlert(msg){
+	return jQuery.noty({"text":msg,"layout":"bottom","type":"alert","closeButton":"true"});
+}
+
