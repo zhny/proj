@@ -1,7 +1,9 @@
 package cn.zhny.admin.environment;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,9 +25,11 @@ import cn.zhny.base.entity.SysConf;
 import cn.zhny.base.utils.DateUtil;
 import cn.zhny.base.utils.DateUtil2;
 import cn.zhny.base.utils.JsonUtil;
+import cn.zhny.base.utils.PoiHelper;
 import cn.zhny.base.utils.Reflections;
 import cn.zhny.base.utils.StringUtil;
 import cn.zhny.base.vo.BSPage;
+import cn.zhny.base.vo.ExportXlsVo;
 import cn.zhny.environment.entity.Record;
 import cn.zhny.environment.entity.Stations;
 
@@ -196,6 +201,69 @@ public class EnvironmentManagerAction extends AbstractAction{
 			record.setStation(Stations.find.ref(1L));
 			record.save();
 		}
+	}
+	
+	@RequestMapping("export")
+	public void export(String dx,HttpServletResponse resp) throws IOException{
+		SysConf sysConf=SysConf.find.setUseQueryCache(true).where().eq("code", "ENV_PICK_TIME").findUnique();
+		String pickTime=sysConf.getValue();
+		
+		ExpressionList<Record> expr=Record.find.where();
+		if(checkParam("rTimeStart")){
+			expr.ge("rTime", getParam("rTimeStart"));
+		}
+		if(checkParam("rTimeEnd")){
+			expr.le("rTime", getParam("rTimeEnd"));
+		}
+		
+		expr.eq("MOD(t0.id,"+pickTime+")", 0);
+		
+		resp.setContentType("application/msexcel;charset=UTF-8");  
+		resp.addHeader("Content-Disposition", "attachment;filename=\""+ new String(("export_data" +DateUtil2.format_yyyy_MM_dd(new Date())+ ".xls").getBytes("GBK"),"ISO8859_1") + "\"");  
+		
+		List<Record> records=expr.orderBy("id desc").findList();
+		if(!CollectionUtils.isEmpty(records)){
+			ExportXlsVo vo=new ExportXlsVo();
+			
+			vo.setSheetName("气象导出数据");
+			List<String> titles=new ArrayList<String>();
+			titles.add("采集时间");
+			titles.add("温度 ℃");
+			titles.add("湿度 %");
+			titles.add("风向 °");
+			titles.add("风速 m/s");
+			titles.add("气压 bpa");
+			titles.add("总辐射 ");
+			titles.add("雨量 ml");
+			titles.add("土壤温度 ℃");
+			titles.add("日照时数 h");
+			titles.add("PM2.5");
+			titles.add("水PH值");
+			vo.setTitles(titles);
+			List<List<String>> rows=new ArrayList<List<String>>();
+			
+			for(Record record:records){
+				rows.add(
+					Arrays.asList(
+							DateUtil2.format_yyyy_MM_dd_HH_mm_ss(record.getrTime()),
+							record.getD1().toString(),
+							record.getD2().toString(),
+							record.getD3().toString(),
+							record.getD4().toString(),
+							record.getD5().toString(),
+							record.getD6().toString(),
+							record.getD7().toString(),
+							record.getD8().toString(),
+							record.getD12().toString(),
+							record.getD13().toString(),
+							record.getD14().toString()
+							)
+				);
+			}
+			vo.setRows(rows);
+			PoiHelper.createXls(resp.getOutputStream(), vo);
+		}
+		
 	}
 	
 }
