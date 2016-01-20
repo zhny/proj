@@ -139,6 +139,9 @@ $(document).ready(function(){
 			$(this).parent().addClass('active');
 		}
 		if(href!='#'){
+			if (typeof (timeTicket) != 'undefined') {
+				clearInterval(timeTicket);
+			}
 			if(target){
 				$(target).load(href,function(data,status,xhr){
 					if(xhr.status==401){

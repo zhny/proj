@@ -15,7 +15,7 @@
 		<div class="box-header" data-original-title>
 			<h2><i class="halflings-icon user"></i><span class="break"></span>气象环境</h2>
 			<div class="box-icon">
-				<a  href="admin/environment/export" data-title="导出数据"  class="btn-minimize"><i class="halflings-icon download-alt"></i>导出数据</a>
+				<a data-href="admin/environment/export" href="javascript:void(0);" data-title="导出数据" id="export_data" class="btn-minimize"><i class="halflings-icon download-alt"></i>导出数据</a>
 			</div>
 		</div>
 		<div class="box-content">
@@ -64,6 +64,11 @@
 	</div>
 </div>
 <script type="text/javascript">
+$('#export_data').click(function(){
+	var href=$(this).attr("data-href")+"?"+$('#search-form').serialize();
+	location.href=href;
+});
+
 var grid = $("#grid-data").bootgrid({
 	sorting:false,
 	navigation:2,
@@ -130,4 +135,5 @@ $('th[data-column-id="d14"]').click(function(){
 	var modal = $.scojs_modal({width:"800",title:"PH变化",remote:'admin/environment/view/d14?isXy=true&'+$('#search-form').serialize()});
 	modal.show();
 });
+
 </script>

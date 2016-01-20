@@ -15,6 +15,7 @@
 		<div class="box-header" data-original-title>
 			<h2><i class="halflings-icon list"></i><span class="break"></span>气象环境</h2>
 			<div class="box-icon">
+				<a data-href="admin/environment/export" href="javascript:void(0);" data-title="导出数据" id="export_data" class="btn-minimize"><i class="halflings-icon download-alt"></i>导出数据</a>
 			</div>
 		</div>
 		<div class="box-content">
@@ -80,6 +81,11 @@
 <script type="text/javascript">
 var col='${param.col}';
 $('#search-form').find('[name="col"]').val(col);
+
+$('#export_data').click(function(){
+	var href=$(this).attr("data-href")+"?"+$('#search-form').serialize();
+	location.href=href;
+});
 
 var grid = $("#grid-data").bootgrid({
 	sorting:false,
